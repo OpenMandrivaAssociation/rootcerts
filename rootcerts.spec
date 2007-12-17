@@ -26,7 +26,6 @@ Source4:	verisign-class-3-secure-server-ca.pem
 Source5:	cert_igca_rsa.crt
 BuildRequires:	perl openssl nss
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 This is a bundle of X.509 certificates of public Certificate
