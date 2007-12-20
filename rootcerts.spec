@@ -6,7 +6,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20070402.00
+Version:	20070713.00
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
@@ -26,6 +26,7 @@ Source4:	verisign-class-3-secure-server-ca.pem
 Source5:	cert_igca_rsa.crt
 BuildRequires:	perl openssl nss
 BuildArch:	noarch
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 This is a bundle of X.509 certificates of public Certificate
@@ -43,6 +44,9 @@ configure this file as the SSLCACertificateFile.
 
 mkdir -p builtins
 cp %{SOURCE1} builtins/certdata.txt
+
+# extract the license
+head -36 builtins/certdata.txt > LICENSE
 
 # add additional CA's here, needs to have the mozilla format...
 cat %{SOURCE2} >> builtins/certdata.txt
@@ -107,11 +111,8 @@ rm -rf %{buildroot}
 
 %files 
 %defattr(-,root,root)
-%doc README
+%doc README LICENSE
 %{_sysconfdir}/pki/tls/cert.pem
 %config(noreplace) %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
 %config(noreplace) %{_sysconfdir}/pki/tls/rootcerts/*
 %config(noreplace) %{_sysconfdir}/pki/tls/mozilla/certdata.txt
-
-
-
