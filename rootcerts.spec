@@ -6,7 +6,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20070713.00
+Version:	20080117.00
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
@@ -26,7 +26,7 @@ Source4:	verisign-class-3-secure-server-ca.pem
 Source5:	cert_igca_rsa.crt
 BuildRequires:	perl openssl nss
 BuildArch:	noarch
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 This is a bundle of X.509 certificates of public Certificate
