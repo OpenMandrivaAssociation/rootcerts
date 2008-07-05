@@ -1,3 +1,6 @@
+# _without = java enabled, _with = java disabled
+%bcond_without java
+
 Summary:	Bundle of CA Root Certificates
 Name:		rootcerts
 # <mrl> Use this versioning style in order to be easily backportable.
@@ -7,7 +10,7 @@ Name:		rootcerts
 # - NEVER specifying the %%{release}
 Epoch:		1
 Version:	20080503.00
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Servers
 URL:		http://www.mandriva.com
@@ -24,7 +27,17 @@ Source4:	verisign-class-3-secure-server-ca.pem
 # http://qa.mandriva.com/show_bug.cgi?id=30067
 # French government CA
 Source5:	cert_igca_rsa.crt
+# Java JKS keystore generator:
+# http://cvs.fedora.redhat.com/viewcvs/devel/ca-certificates/generate-cacerts.pl
+Source6:	generate-cacerts.pl
+# Fix overwriting issue with generate-cacerts.pl
+Patch0:		generate-cacerts-fix-entrustsslca.patch
+# Some hacks to make generate-cacerts.pl work with some of our certificates
+Patch1:		generate-cacerts-mandriva.patch
 BuildRequires:	perl openssl nss
+%if %with java
+BuildRequires:	java-rpmbuild
+%endif
 BuildArch:	noarch
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -35,6 +48,16 @@ root CA list (the file "certdata.txt"). It contains the certificates
 in both plain text and PEM format and therefore can be directly used
 with an Apache/mod_ssl webserver for SSL client authentication. Just
 configure this file as the SSLCACertificateFile.
+
+%if %with java
+%package java
+Summary:	Bundle of CA Root Certificates for Java
+Group:		Development/Java
+
+%description java
+Bundle of X.509 certificates of public Certificate Authorities (CA)
+in a format used by Java Runtime Environment.
+%endif
 
 %prep
 
@@ -53,6 +76,10 @@ cat %{SOURCE2} >> builtins/certdata.txt
 
 # CAcert
 cp %{SOURCE3} .
+
+cp %{SOURCE6} .
+%patch0 -p0
+%patch1 -p0
 
 %build 
 rm -f configure
@@ -78,6 +105,13 @@ perl mkcerts.pl > certs.sh
 cat pem/*.pem > ca-bundle.crt
 cat %{SOURCE4} >> ca-bundle.crt
 
+%if %with java
+mkdir -p java
+cd java
+perl ../generate-cacerts.pl %{java_home}/bin/keytool ../ca-bundle.crt
+cd ..
+%endif
+
 %install
 rm -rf %{buildroot}
 
@@ -91,6 +125,11 @@ install -m0644 ca-bundle.crt %{buildroot}%{_sysconfdir}/pki/tls/certs/
 ln -s certs/ca-bundle.crt %{buildroot}%{_sysconfdir}/pki/tls/cert.pem
 
 install -m0644 builtins/certdata.txt %{buildroot}%{_sysconfdir}/pki/tls/mozilla/
+
+%if %with java
+install -d %{buildroot}%{_sysconfdir}/pki/java
+install -m0644 java/cacerts %{buildroot}%{_sysconfdir}/pki/java/
+%endif
 
 cat > README << EOF
 
@@ -116,3 +155,10 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
 %config(noreplace) %{_sysconfdir}/pki/tls/rootcerts/*
 %config(noreplace) %{_sysconfdir}/pki/tls/mozilla/certdata.txt
+
+%if %with java
+%files java
+%defattr(-,root,root)
+%dir %{_sysconfdir}/pki/java
+%config(noreplace) %{_sysconfdir}/pki/java/cacerts
+%endif
