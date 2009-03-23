@@ -34,6 +34,8 @@ Source6:	generate-cacerts.pl
 Patch0:		generate-cacerts-fix-entrustsslca.patch
 # Some hacks to make generate-cacerts.pl work with some of our certificates
 Patch1:		generate-cacerts-mandriva.patch
+# Just rename identically named certificates that are not handled by mandriva.cpatch
+Patch2:		generate-cacerts-rename-duplicates.patch
 BuildRequires:	perl openssl nss
 %if %with java
 BuildRequires:	java-rpmbuild
@@ -80,6 +82,7 @@ cp %{SOURCE3} .
 cp %{SOURCE6} .
 %patch0 -p0
 %patch1 -p0
+%patch2 -p0
 
 %build 
 rm -f configure
