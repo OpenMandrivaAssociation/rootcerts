@@ -9,7 +9,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20090115.00
+Version:	20090521.00
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
@@ -24,9 +24,6 @@ Source3:	cacert.org.der
 # http://qa.mandriva.com/show_bug.cgi?id=29612
 # https://www.verisign.com/support/verisign-intermediate-ca/secure-site-intermediate/index.html
 Source4:	verisign-class-3-secure-server-ca.pem
-# http://qa.mandriva.com/show_bug.cgi?id=30067
-# French government CA
-Source5:	cert_igca_rsa.crt
 # Java JKS keystore generator:
 # http://cvs.fedora.redhat.com/viewcvs/devel/ca-certificates/generate-cacerts.pl
 Source6:	generate-cacerts.pl
@@ -97,9 +94,6 @@ addbuiltin -n "CAcert Inc." -t "CT,C,C" < cacert.org.der >> builtins/certdata.tx
 openssl x509 -in %{SOURCE4} -inform PEM -outform DER | \
 	addbuiltin -n "VeriSign Class 3 Secure Server CA" \
 	-t "CT,C,C" >> builtins/certdata.txt
-
-# French government CA
-addbuiltin -n "IGC/A (French government CA)" -t "CT,C,C" < %{SOURCE5} >> builtins/certdata.txt
 
 perl mkcerts.pl > certs.sh
 
