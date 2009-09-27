@@ -1,5 +1,9 @@
 # _without = java enabled, _with = java disabled
+%ifnarch %arm %mips
 %bcond_without java
+%else
+%bcond_with java
+%endif
 
 Summary:	Bundle of CA Root Certificates
 Name:		rootcerts
@@ -10,7 +14,7 @@ Name:		rootcerts
 # - NEVER specifying the %%{release}
 Epoch:		1
 Version:	20090814.00
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Servers
 URL:		http://www.mandriva.com
@@ -37,7 +41,6 @@ BuildRequires:	perl openssl nss
 %if %with java
 BuildRequires:	java-rpmbuild
 %endif
-BuildArch:	noarch
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
