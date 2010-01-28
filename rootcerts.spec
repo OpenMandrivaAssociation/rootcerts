@@ -1,3 +1,7 @@
+# don't make useless debug packages
+%define _enable_debug_packages	%{nil}
+%define debug_package		%{nil}
+
 # _without = java enabled, _with = java disabled
 %if %mdkversion < 200900
 %bcond_with java
@@ -17,7 +21,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20091203.02
+Version:	20091203.03
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
