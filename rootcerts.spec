@@ -1,12 +1,12 @@
 # _without = java enabled, _with = java disabled
+%if %mdkversion < 200900
+%bcond_with java
+%else
 %ifnarch %arm %mips
 %bcond_without java
 %else
 %bcond_with java
 %endif
-
-%if %mdkversion < 200900
-%bcond_without java
 %endif
 
 Summary:	Bundle of CA Root Certificates
@@ -17,7 +17,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20091203.01
+Version:	20091203.02
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
