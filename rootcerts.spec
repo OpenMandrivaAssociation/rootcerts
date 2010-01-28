@@ -5,6 +5,10 @@
 %bcond_with java
 %endif
 
+%if %mdkversion < 200900
+%bcond_without java
+%endif
+
 Summary:	Bundle of CA Root Certificates
 Name:		rootcerts
 # <mrl> Use this versioning style in order to be easily backportable.
@@ -13,7 +17,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20091203.00
+Version:	20091203.01
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
