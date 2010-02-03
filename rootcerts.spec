@@ -21,7 +21,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20091203.03
+Version:	20091203.04
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
@@ -45,6 +45,8 @@ Patch0:		generate-cacerts-fix-entrustsslca.patch
 Patch1:		generate-cacerts-mandriva.patch
 # Just rename identically named certificates that are not handled by mandriva.cpatch
 Patch2:		generate-cacerts-rename-duplicates.patch
+# remove the MD5 Collisions Forged Rogue CA 25c3 one
+Patch3:		certdata-MD5_Collisions_Forged_Rogue_CA_25c3.diff
 BuildRequires:	perl openssl nss
 %if %with java
 BuildRequires:	java-rpmbuild
@@ -77,6 +79,7 @@ in a format used by Java Runtime Environment.
 
 mkdir -p builtins
 cp %{SOURCE1} builtins/certdata.txt
+%patch3 -p0
 
 # extract the license
 head -36 builtins/certdata.txt > LICENSE
