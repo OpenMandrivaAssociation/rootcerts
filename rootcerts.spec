@@ -156,6 +156,10 @@ configure this file as the SSLCACertificateFile.
 
 EOF
 
+# fix #58107
+install -d %{buildroot}%{_sysconfdir}/ssl
+ln -sf %{_sysconfdir}/pki/tls/certs %{buildroot}%{_sysconfdir}/ssl/certs
+
 %clean
 rm -rf %{buildroot}
 
@@ -166,6 +170,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
 %config(noreplace) %{_sysconfdir}/pki/tls/rootcerts/*
 %config(noreplace) %{_sysconfdir}/pki/tls/mozilla/certdata.txt
+%{_sysconfdir}/ssl/certs
 
 %if %with java
 %files java
