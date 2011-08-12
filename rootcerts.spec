@@ -45,7 +45,7 @@ Patch0:		generate-cacerts-fix-entrustsslca.patch
 Patch1:		generate-cacerts-mandriva.patch
 # Just rename identically named certificates that are not handled by mandriva.cpatch
 Patch2:		generate-cacerts-rename-duplicates.patch
-BuildRequires:	perl openssl nss
+BuildRequires:	perl openssl nss automake libtool
 %if %with java
 BuildRequires:	java-rpmbuild
 %endif
