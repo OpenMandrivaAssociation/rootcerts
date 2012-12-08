@@ -1,7 +1,2 @@
 sources:
-  "cacert.org.der:"	135cec36f49cb8e93b1ab270cd80884676ce8f33
-  "certdata.txt:"	69b7ebd2f991a304a8b942fd21894513139dbd37
-  "generate-cacerts.pl:"	8a20655acd81a0e7bab237784dbb17ede423ad00
-  "rootcerts-igp-brasil.txt:"	ee0cd4a43f264abec470840023c3a069f2f76a3a
-  "rootcerts.tar.bz2:"	54c4ec6b7d2c04dee64f80a2e1b4fe545b1b7484
-  "verisign-class-3-secure-server-ca.pem:"	35ab02b0358285b32ec8f769181e5a572a192d82
+  "rootcerts.tar.bz2": 54c4ec6b7d2c04dee64f80a2e1b4fe545b1b7484

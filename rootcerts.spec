@@ -175,3 +175,162 @@ rm -rf %{buildroot}
 %dir %{_sysconfdir}/pki/java
 %config(noreplace) %{_sysconfdir}/pki/java/cacerts
 %endif
+
+
+%changelog
+* Sat Jun 30 2012 Oden Eriksson <oeriksson@mandriva.com> 1:20120628.00-1mdv2012.0
++ Revision: 807609
+- new certdata.txt file from upstream
+
+* Thu Feb 23 2012 Oden Eriksson <oeriksson@mandriva.com> 1:20120218.00-1
++ Revision: 779386
+- new certdata.txt as of 2012/02/18
+
+* Thu Jan 26 2012 Oden Eriksson <oeriksson@mandriva.com> 1:20120117.00-1
++ Revision: 769149
+- new certdata.txt file from upstream cvs as of 2012/01/17
+
+* Sat Nov 05 2011 Oden Eriksson <oeriksson@mandriva.com> 1:20111103.00-1
++ Revision: 720507
+- 20111103
+
+  + Paulo Andrade <pcpa@mandriva.com.br>
+    - Assume a working java-1.6.0-openjdk on arm
+
+* Wed Sep 07 2011 Oden Eriksson <oeriksson@mandriva.com> 1:20110902.00-1
++ Revision: 698537
+- DigiNotar, bye bye
+
+* Wed Aug 31 2011 Oden Eriksson <oeriksson@mandriva.com> 1:20110830.00-1
++ Revision: 697585
+- new certdata.txt file (fixes MFSA 2011-34 Protection against fraudulent DigiNotar certificates)
+
+* Fri Aug 12 2011 Oden Eriksson <oeriksson@mandriva.com> 1:20110801.00-1
++ Revision: 694114
+- fix deps (wtf?)
+- new certdata.txt file as of august the first 2011
+
+* Mon May 09 2011 Oden Eriksson <oeriksson@mandriva.com> 1:20110413.00-1
++ Revision: 673014
+- whoops, forgot to drop the patch
+- new certdata.txt from upstream cvs as of 2011/04/13
+
+* Thu May 05 2011 Oden Eriksson <oeriksson@mandriva.com> 1:20110323.00-2
++ Revision: 669429
+- mass rebuild
+
+* Fri Mar 25 2011 Oden Eriksson <oeriksson@mandriva.com> 1:20110323.00-1
++ Revision: 648516
+- new certdata.txt file from upstream (2011/03/23)
+
+* Sat Dec 25 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20101202.00-1mdv2011.0
++ Revision: 624972
+- new certdata.txt file from upstream cvs (20101202)
+
+* Thu Nov 25 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20101119.00-1mdv2011.0
++ Revision: 601001
+- new certdata.txt from upstream (2010-11-19)
+
+* Thu Sep 09 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20100827.00-1mdv2011.0
++ Revision: 576922
+- new certdata.txt file as of 2010/08/27
+
+* Mon May 17 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20100408.00-1mdv2010.1
++ Revision: 544960
+- drop the RSA Security 1024 V3 Root cert
+
+* Tue Apr 06 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20100403.01-1mdv2010.1
++ Revision: 532249
+- new certdata.txt from upstream (20100403)
+
+* Fri Mar 12 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20100216.01-1mdv2010.1
++ Revision: 518349
+- fix #58107 (provide compatibility symlink for Adobe Flash)
+- new certdata.txt (20100216) from upstream
+
+* Wed Feb 03 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20091203.04-1mdv2010.1
++ Revision: 500052
+- P3: remove the offending MD5 Collisions Forged Rogue CA 25c3 cert
+
+* Thu Jan 28 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20091203.03-1mdv2010.1
++ Revision: 497698
+- avoid making useless (empty) debug packages
+
+* Thu Jan 28 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20091203.02-1mdv2010.1
++ Revision: 497654
+- fix the bcond stuff (thanks anssi)
+
+* Thu Jan 28 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20091203.01-1mdv2010.1
++ Revision: 497593
+- disable java cert generations on older products
+
+* Sun Jan 24 2010 Oden Eriksson <oeriksson@mandriva.com> 1:20091203.00-1mdv2010.1
++ Revision: 495449
+- new certdata.txt file as of 2009/12/03
+- the java certs won't build unless using a safe locale
+
+* Mon Oct 19 2009 Anssi Hannula <anssi@mandriva.org> 1:20090831.00-1mdv2010.0
++ Revision: 458242
+- add multiple "-alt" suffixes to java certificate shortnames if more
+  than 2 certificates share the same name
+  (cacerts-rename-duplicates.patch modified)
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - new certdata.txt from mozilla
+
+* Mon Sep 28 2009 Olivier Blin <blino@mandriva.org> 1:20090814.00-2mdv2010.0
++ Revision: 450336
+- disable java on mips & arm, implying it's not noarch anymore
+  (from Arnaud Patard)
+
+* Sat Aug 22 2009 Oden Eriksson <oeriksson@mandriva.com> 1:20090814.00-1mdv2010.0
++ Revision: 419733
+- new snapshot (20090814)
+
+* Sun Aug 02 2009 Oden Eriksson <oeriksson@mandriva.com> 1:20090521.00-1mdv2010.0
++ Revision: 407545
+- new cvs snap (20090521)
+- the IGC/A cert was added upstream (S5)
+
+* Mon Mar 23 2009 Anssi Hannula <anssi@mandriva.org> 1:20090115.00-1mdv2009.1
++ Revision: 360711
+- java: rename identically named certificates that are not handled by
+  mandriva.patch
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - new certdata.txt file
+
+* Sat Jan 24 2009 Oden Eriksson <oeriksson@mandriva.com> 1:20081017.00-2mdv2009.1
++ Revision: 333321
+- roll back the certdata.txt file for now
+- new certdata.txt file
+
+* Fri Oct 24 2008 Oden Eriksson <oeriksson@mandriva.com> 1:20081017.00-1mdv2009.1
++ Revision: 296928
+- new S1
+
+* Sat Jul 05 2008 Anssi Hannula <anssi@mandriva.org> 1:20080503.00-2mdv2009.0
++ Revision: 232015
+- add java subpackage that contains cacerts file for JRE, and a
+  --with[out] java build option to disable it
+
+* Fri Jul 04 2008 Oden Eriksson <oeriksson@mandriva.com> 1:20080503.00-1mdv2009.0
++ Revision: 231658
+- new certdata.txt
+
+* Wed Jun 18 2008 Thierry Vignaud <tv@mandriva.org> 1:20080117.00-2mdv2009.0
++ Revision: 225323
+- rebuild
+
+* Thu Feb 14 2008 Oden Eriksson <oeriksson@mandriva.com> 1:20080117.00-1mdv2008.1
++ Revision: 168072
+- new certdata.txt (Guenter Knauf)
+
+* Thu Dec 20 2007 Oden Eriksson <oeriksson@mandriva.com> 1:20070713.00-1mdv2008.1
++ Revision: 135400
+- new S1 from upstream cvs
+
+* Mon Dec 17 2007 Thierry Vignaud <tv@mandriva.org> 1:20070402.00-1mdv2008.1
++ Revision: 126645
+- kill re-definition of %%buildroot on Pixel's request
+
