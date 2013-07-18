@@ -21,8 +21,8 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20120628.00
-Release:	%mkrel 1
+Version:	20121229.00
+Release:	2
 License:	GPL
 Group:		System/Servers
 URL:		http://www.mandriva.com
