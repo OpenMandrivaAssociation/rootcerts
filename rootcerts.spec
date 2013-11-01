@@ -22,7 +22,7 @@ Name:		rootcerts
 # - NEVER specifying the %%{release}
 Epoch:		1
 Version:	20121229.00
-Release:	2
+Release:	3
 License:	GPL
 Group:		System/Servers
 URL:		http://www.mandriva.com
@@ -39,13 +39,15 @@ Source4:	verisign-class-3-secure-server-ca.pem
 # Java JKS keystore generator:
 # http://cvs.fedora.redhat.com/viewcvs/devel/ca-certificates/generate-cacerts.pl
 Source6:	generate-cacerts.pl
+# http://www.cacert.org/certs/class3.der
+Source7:	cacert_class3.der
 # Fix overwriting issue with generate-cacerts.pl
 Patch0:		generate-cacerts-fix-entrustsslca.patch
 # Some hacks to make generate-cacerts.pl work with some of our certificates
 Patch1:		generate-cacerts-mandriva.patch
 # Just rename identically named certificates that are not handled by mandriva.cpatch
 Patch2:		generate-cacerts-rename-duplicates.patch
-BuildRequires:	perl openssl nss automake libtool
+BuildRequires:	perl openssl openssl-perl nss automake libtool
 %if %with java
 BuildRequires:	java-rpmbuild
 %endif
@@ -86,6 +88,7 @@ cat %{SOURCE2} >> builtins/certdata.txt
 
 # CAcert
 cp %{SOURCE3} .
+cp %{SOURCE7} .
 
 cp %{SOURCE6} .
 %patch0 -p0
@@ -99,6 +102,7 @@ libtoolize --copy --force; aclocal; autoconf; automake --foreign --add-missing -
 # CAcert
 # http://wiki.cacert.org/wiki/NSSLib
 addbuiltin -n "CAcert Inc." -t "CT,C,C" < cacert.org.der >> builtins/certdata.txt
+addbuiltin -n "CAcert Inc. Class 3" -t "CT,C,C" < cacert_class3.der >> builtins/certdata.txt
 
 # new verisign intermediate certificate
 # -t trust        trust flags (cCTpPuw).
