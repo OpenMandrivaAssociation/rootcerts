@@ -25,7 +25,7 @@ Version:	20131114.00
 Release:	4
 License:	GPL
 Group:		System/Servers
-URL:		http://www.mandriva.com
+URL:		%{disturl}
 # S0 originates from http://switch.dl.sourceforge.net/sourceforge/courier/courier-0.52.1.tar.bz2
 Source0:	rootcerts.tar.bz2
 #  https://hg.mozilla.org/projects/nss/raw-file/31f662841be2/lib/ckfw/builtins/certdata.txt
@@ -36,6 +36,8 @@ Source3:	cacert.org.der
 # http://qa.mandriva.com/show_bug.cgi?id=29612
 # https://www.verisign.com/support/verisign-intermediate-ca/secure-site-intermediate/index.html
 Source4:	verisign-class-3-secure-server-ca.pem
+#http://www.cacert.org/certs/root.crt
+Source5:	cacert.org.crt
 # Java JKS keystore generator:
 # http://cvs.fedora.redhat.com/viewcvs/devel/ca-certificates/generate-cacerts.pl
 Source6:	generate-cacerts.pl
@@ -51,7 +53,12 @@ Patch0:		generate-cacerts-fix-entrustsslca.patch
 Patch1:		generate-cacerts-mandriva.patch
 # Just rename identically named certificates that are not handled by mandriva.cpatch
 Patch2:		generate-cacerts-rename-duplicates.patch
-BuildRequires:	perl openssl openssl-perl nss automake libtool
+BuildRequires:	perl
+BuildRequires:	openssl
+BuildRequires:	openssl-perl
+BuildRequires:	nss
+BuildRequires:	automake
+BuildRequires:	libtool
 %if %with java
 BuildRequires:	java-rpmbuild
 %endif
@@ -90,6 +97,7 @@ cat %{SOURCE2} >> builtins/certdata.txt
 
 # CAcert
 cp %{SOURCE3} .
+cp %{SOURCE5} .
 cp %{SOURCE6} .
 cp %{SOURCE7} .
 cp %{SOURCE8} .
@@ -99,7 +107,7 @@ cp %{SOURCE9} .
 %patch1 -p0
 %patch2 -p0
 
-%build 
+%build
 rm -f configure
 libtoolize --copy --force; aclocal; autoconf; automake --foreign --add-missing --copy
 
@@ -169,8 +177,7 @@ for d in certs private; do
 	ln -sf %{_sysconfdir}/pki/tls/$d %{buildroot}%{_sysconfdir}/ssl/
 done
 
-%files 
-%defattr(-,root,root)
+%files
 %doc README LICENSE
 %{_sysconfdir}/pki/tls/cert.pem
 %config(noreplace) %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
@@ -181,7 +188,6 @@ done
 
 %if %with java
 %files java
-%defattr(-,root,root)
 %dir %{_sysconfdir}/pki/java
 %config(noreplace) %{_sysconfdir}/pki/java/cacerts
 %endif
