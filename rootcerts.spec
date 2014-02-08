@@ -22,7 +22,7 @@ Name:		rootcerts
 # - NEVER specifying the %%{release}
 Epoch:		1
 Version:	20131114.00
-Release:	4
+Release:	5
 License:	GPL
 Group:		System/Servers
 URL:		%{disturl}
