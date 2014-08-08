@@ -6,7 +6,7 @@
 %if %mdkversion < 200900
 %bcond_with java
 %else
-%ifnarch %mips aarch64
+%ifnarch %mips
 %bcond_without java
 %else
 %bcond_with java
