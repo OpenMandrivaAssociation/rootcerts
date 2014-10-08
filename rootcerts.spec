@@ -21,14 +21,16 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20131114.00
-Release:	10
+Version:	20141008.00
+Release:	1
 License:	GPL
 Group:		System/Servers
 URL:		%{disturl}
 # S0 originates from http://switch.dl.sourceforge.net/sourceforge/courier/courier-0.52.1.tar.bz2
 Source0:	rootcerts.tar.bz2
 #  https://hg.mozilla.org/projects/nss/raw-file/31f662841be2/lib/ckfw/builtins/certdata.txt
+#(tpg)  newer source:
+# https://hg.mozilla.org/mozilla-central/file/4bad24a306b2/security/nss/lib/ckfw/builtins/certdata.txt
 Source1:	certdata.txt
 Source2:	rootcerts-igp-brasil.txt
 # http://www.cacert.org/certs/root.der
