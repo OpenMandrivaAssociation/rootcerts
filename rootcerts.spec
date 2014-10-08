@@ -126,7 +126,7 @@ openssl x509 -in %{SOURCE4} -inform PEM -outform DER | \
 
 perl mkcerts.pl > certs.sh
 
-%configure2_5x \
+%configure \
 		--with-certdb=%{_sysconfdir}/pki/tls/rootcerts
 
 %make
