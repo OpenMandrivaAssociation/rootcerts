@@ -3,7 +3,7 @@ sources:
   cacert.org.crt: 506fb5538523119fdeddb269bdaa355b1c12a58f
   cacert.org.der: 135cec36f49cb8e93b1ab270cd80884676ce8f33
   cacert_class3.der: ad7c3f64fc4439fef4e90be8f47c6cfa8aadfdce
-  certdata.txt: 029c6caed82ae81f63b8be02d500f0d42c9219b7
+  certdata.txt: c4540021427a6fa29e5f50db9f12d48c97d33889
   publicxca_der.crt: da10a95e099405402d8b72b05643491a1b5ee5ec
   rootca_der.crt: b2bd9031aa6d0e14f4c57fd548258f37b1fb39e4
   rootcerts-igp-brasil.txt: ee0cd4a43f264abec470840023c3a069f2f76a3a
