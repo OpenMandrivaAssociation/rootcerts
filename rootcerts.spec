@@ -135,7 +135,7 @@ cat pem/*.pem > ca-bundle.crt
 cat %{SOURCE4} >> ca-bundle.crt
 
 %if %with java
-mkdir -p java
+mkdir java
 cd java
 LC_ALL=C perl ../generate-cacerts.pl %{java_home}/bin/keytool ../ca-bundle.crt
 cd ..
