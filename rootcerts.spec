@@ -3,14 +3,8 @@
 %define debug_package %{nil}
 
 # _without = java enabled, _with = java disabled
-%if %mdkversion < 200900
-%bcond_with java
-%else
 %ifnarch %mips
 %bcond_without java
-%else
-%bcond_with java
-%endif
 %endif
 
 Summary:	Bundle of CA Root Certificates
@@ -61,7 +55,7 @@ BuildRequires:	openssl-perl
 BuildRequires:	nss
 BuildRequires:	automake
 BuildRequires:	libtool
-%if %with java
+%if %{with java}
 BuildRequires:	java-rpmbuild
 %endif
 
@@ -73,7 +67,7 @@ in both plain text and PEM format and therefore can be directly used
 with an Apache/mod_ssl webserver for SSL client authentication. Just
 configure this file as the SSLCACertificateFile.
 
-%if %with java
+%if %{with java}
 %package java
 Summary:	Bundle of CA Root Certificates for Java
 Group:		Development/Java
@@ -134,7 +128,7 @@ perl mkcerts.pl > certs.sh
 cat pem/*.pem > ca-bundle.crt
 cat %{SOURCE4} >> ca-bundle.crt
 
-%if %with java
+%if %{with java}
 mkdir java
 cd java
 LC_ALL=C perl ../generate-cacerts.pl %{java_home}/bin/keytool ../ca-bundle.crt
@@ -153,7 +147,7 @@ ln -s certs/ca-bundle.crt %{buildroot}%{_sysconfdir}/pki/tls/cert.pem
 
 install -m0644 builtins/certdata.txt %{buildroot}%{_sysconfdir}/pki/tls/mozilla/
 
-%if %with java
+%if %{with java}
 install -d %{buildroot}%{_sysconfdir}/pki/java
 install -m0644 java/cacerts %{buildroot}%{_sysconfdir}/pki/java/
 %endif
@@ -188,7 +182,7 @@ done
 %{_sysconfdir}/ssl/certs
 %{_sysconfdir}/ssl/private
 
-%if %with java
+%if %{with java}
 %files java
 %dir %{_sysconfdir}/pki/java
 %config(noreplace) %{_sysconfdir}/pki/java/cacerts
