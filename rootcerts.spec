@@ -56,7 +56,6 @@ BuildRequires:	nss
 BuildRequires:	automake
 BuildRequires:	libtool
 %if %{with java}
-BuildRequires:	java-rpmbuild
 BuildRequires:	java-devel
 %endif
 
