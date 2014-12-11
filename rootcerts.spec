@@ -16,7 +16,7 @@ Name:		rootcerts
 # - NEVER specifying the %%{release}
 Epoch:		1
 Version:	20141008.00
-Release:	2
+Release:	3
 License:	GPL
 Group:		System/Servers
 URL:		%{disturl}
@@ -57,6 +57,7 @@ BuildRequires:	automake
 BuildRequires:	libtool
 %if %{with java}
 BuildRequires:	java-devel
+BuildRequires:	javapackages-tools
 %endif
 
 %description
