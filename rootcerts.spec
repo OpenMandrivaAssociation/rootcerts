@@ -3,14 +3,8 @@
 %define debug_package %{nil}
 
 # _without = java enabled, _with = java disabled
-%if %mdkversion < 200900
-%bcond_with java
-%else
 %ifnarch %mips
 %bcond_without java
-%else
-%bcond_with java
-%endif
 %endif
 
 Summary:	Bundle of CA Root Certificates
@@ -21,16 +15,14 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20141008.00
+Version:	20150326.00
 Release:	1
 License:	GPL
 Group:		System/Servers
 URL:		%{disturl}
 # S0 originates from http://switch.dl.sourceforge.net/sourceforge/courier/courier-0.52.1.tar.bz2
 Source0:	rootcerts.tar.bz2
-#  https://hg.mozilla.org/projects/nss/raw-file/31f662841be2/lib/ckfw/builtins/certdata.txt
-#(tpg)  newer source:
-# https://hg.mozilla.org/mozilla-central/file/4bad24a306b2/security/nss/lib/ckfw/builtins/certdata.txt
+#  https://hg.mozilla.org/projects/nss/raw-file/e2b98ed12caa/lib/ckfw/builtins/certdata.txt
 Source1:	certdata.txt
 Source2:	rootcerts-igp-brasil.txt
 # http://www.cacert.org/certs/root.der
@@ -61,8 +53,9 @@ BuildRequires:	openssl-perl
 BuildRequires:	nss
 BuildRequires:	automake
 BuildRequires:	libtool
-%if %with java
-BuildRequires:	java-rpmbuild
+%if %{with java}
+BuildRequires:	java-devel
+BuildRequires:	javapackages-tools
 %endif
 
 %description
@@ -73,7 +66,7 @@ in both plain text and PEM format and therefore can be directly used
 with an Apache/mod_ssl webserver for SSL client authentication. Just
 configure this file as the SSLCACertificateFile.
 
-%if %with java
+%if %{with java}
 %package java
 Summary:	Bundle of CA Root Certificates for Java
 Group:		Development/Java
@@ -126,7 +119,7 @@ openssl x509 -in %{SOURCE4} -inform PEM -outform DER | \
 
 perl mkcerts.pl > certs.sh
 
-%configure2_5x \
+%configure \
 		--with-certdb=%{_sysconfdir}/pki/tls/rootcerts
 
 %make
@@ -134,8 +127,8 @@ perl mkcerts.pl > certs.sh
 cat pem/*.pem > ca-bundle.crt
 cat %{SOURCE4} >> ca-bundle.crt
 
-%if %with java
-mkdir -p java
+%if %{with java}
+mkdir java
 cd java
 LC_ALL=C perl ../generate-cacerts.pl %{java_home}/bin/keytool ../ca-bundle.crt
 cd ..
@@ -153,7 +146,7 @@ ln -s certs/ca-bundle.crt %{buildroot}%{_sysconfdir}/pki/tls/cert.pem
 
 install -m0644 builtins/certdata.txt %{buildroot}%{_sysconfdir}/pki/tls/mozilla/
 
-%if %with java
+%if %{with java}
 install -d %{buildroot}%{_sysconfdir}/pki/java
 install -m0644 java/cacerts %{buildroot}%{_sysconfdir}/pki/java/
 %endif
@@ -188,7 +181,7 @@ done
 %{_sysconfdir}/ssl/certs
 %{_sysconfdir}/ssl/private
 
-%if %with java
+%if %{with java}
 %files java
 %dir %{_sysconfdir}/pki/java
 %config(noreplace) %{_sysconfdir}/pki/java/cacerts
