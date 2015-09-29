@@ -15,14 +15,14 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20150326.00
-Release:	3
+Version:	20150929.00
+Release:	1
 License:	GPL
 Group:		System/Servers
 URL:		%{disturl}
 # S0 originates from http://switch.dl.sourceforge.net/sourceforge/courier/courier-0.52.1.tar.bz2
 Source0:	rootcerts.tar.bz2
-#  https://hg.mozilla.org/projects/nss/raw-file/e2b98ed12caa/lib/ckfw/builtins/certdata.txt
+#  http://hg.mozilla.org/projects/nss/raw-file/tip/lib/ckfw/builtins/certdata.txt
 Source1:	certdata.txt
 Source2:	rootcerts-igp-brasil.txt
 # http://www.cacert.org/certs/root.der
@@ -39,8 +39,8 @@ Source6:	generate-cacerts.pl
 Source7:	cacert_class3.der
 # certificates from signet
 # http://www.signet.pl/repository/index.html
-Source8:	rootca_der.crt
-Source9:	publicxca_der.crt
+Source8:	http://www.signet.pl/repository/signetrootca/rootca_der.crt
+Source9:	http://www.signet.pl/repository/publicca/publicxca_der.crt
 # Fix overwriting issue with generate-cacerts.pl
 Patch0:		generate-cacerts-fix-entrustsslca.patch
 # Some hacks to make generate-cacerts.pl work with some of our certificates
@@ -79,13 +79,11 @@ in a format used by Java Runtime Environment.
 %prep
 %setup -q -n rootcerts
 
-#cvs -d :pserver:anonymous@cvs-mirror.mozilla.org:/cvsroot co -p mozilla/security/nss/lib/ckfw/builtins/certdata.txt > certdata.txt
-
 mkdir -p builtins
 cp %{SOURCE1} builtins/certdata.txt
 
 # extract the license
-head -36 builtins/certdata.txt > LICENSE
+head -4 builtins/certdata.txt > LICENSE
 
 # add additional CA's here, needs to have the mozilla format...
 cat %{SOURCE2} >> builtins/certdata.txt
@@ -119,8 +117,7 @@ openssl x509 -in %{SOURCE4} -inform PEM -outform DER | \
 
 perl mkcerts.pl > certs.sh
 
-%configure \
-		--with-certdb=%{_sysconfdir}/pki/tls/rootcerts
+%configure --with-certdb=%{_sysconfdir}/pki/tls/rootcerts
 
 %make
 
