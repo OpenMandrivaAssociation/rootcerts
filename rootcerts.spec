@@ -15,7 +15,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20150929.00
+Version:	20160426.00
 Release:	1
 License:	GPL
 Group:		System/Servers
@@ -41,6 +41,8 @@ Source7:	cacert_class3.der
 # http://www.signet.pl/repository/index.html
 Source8:	http://www.signet.pl/repository/signetrootca/rootca_der.crt
 Source9:	http://www.signet.pl/repository/publicca/publicxca_der.crt
+# certificates from https://letsencrypt.org
+Source10:	https://letsencrypt.org/certs/isrgrootx1.der
 # Fix overwriting issue with generate-cacerts.pl
 Patch0:		generate-cacerts-fix-entrustsslca.patch
 # Some hacks to make generate-cacerts.pl work with some of our certificates
@@ -57,6 +59,7 @@ BuildRequires:	libtool
 BuildRequires:	java-devel
 BuildRequires:	javapackages-tools
 %endif
+BuildArch:	noarch
 
 %description
 This is a bundle of X.509 certificates of public Certificate
@@ -95,6 +98,7 @@ cp %{SOURCE6} .
 cp %{SOURCE7} .
 cp %{SOURCE8} .
 cp %{SOURCE9} .
+cp %{SOURCE10} .
 
 %patch0 -p0
 %patch1 -p0
@@ -166,7 +170,7 @@ EOF
 install -d %{buildroot}%{_sysconfdir}/ssl
 
 for d in certs private; do
-	ln -sf %{_sysconfdir}/pki/tls/$d %{buildroot}%{_sysconfdir}/ssl/
+    ln -sf %{_sysconfdir}/pki/tls/$d %{buildroot}%{_sysconfdir}/ssl/
 done
 
 %files
