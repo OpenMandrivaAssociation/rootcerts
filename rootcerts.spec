@@ -60,6 +60,7 @@ BuildRequires:	java-devel
 BuildRequires:	javapackages-tools
 %endif
 BuildArch:	noarch
+Provides:	ca-certificates
 
 %description
 This is a bundle of X.509 certificates of public Certificate
