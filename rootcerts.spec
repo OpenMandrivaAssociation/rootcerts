@@ -16,7 +16,7 @@ Name:		rootcerts
 # - NEVER specifying the %%{release}
 Epoch:		1
 Version:	20171023.00
-Release:	1
+Release:	2
 License:	GPL
 Group:		System/Servers
 URL:		%{disturl}
@@ -60,6 +60,7 @@ BuildRequires:	java-devel
 BuildRequires:	javapackages-tools
 %endif
 BuildArch:	noarch
+Provides:	ca-certificates
 
 %description
 This is a bundle of X.509 certificates of public Certificate
