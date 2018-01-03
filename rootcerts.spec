@@ -15,8 +15,8 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20171023.00
-Release:	2
+Version:	20180103.00
+Release:	1
 License:	GPL
 Group:		System/Servers
 URL:		%{disturl}
@@ -49,6 +49,9 @@ Patch0:		generate-cacerts-fix-entrustsslca.patch
 Patch1:		generate-cacerts-mandriva.patch
 # Just rename identically named certificates that are not handled by mandriva.cpatch
 Patch2:		generate-cacerts-rename-duplicates.patch
+%if %{mdvver} > 3000000
+Patch3:		rootcerts-fix-mkcerts-to-work-with-new-openssl.patch
+%endif
 BuildRequires:	perl
 BuildRequires:	openssl
 BuildRequires:	openssl-perl
@@ -104,6 +107,9 @@ cp %{SOURCE10} .
 %patch0 -p0
 %patch1 -p0
 %patch2 -p0
+%if %{mdvver} > 3000000
+%patch3 -p1
+%endif
 
 %build
 rm -f configure
