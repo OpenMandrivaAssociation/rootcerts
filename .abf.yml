@@ -1,7 +1,7 @@
 sources:
   cacert.org.der: 135cec36f49cb8e93b1ab270cd80884676ce8f33
   cacert_class3.der: ad7c3f64fc4439fef4e90be8f47c6cfa8aadfdce
-  publicxca_der.crt: a526a05a2e950d35de403541600c8b81e58f5049
+  publicxca_der.crt: 87a500da9573e70a02067441312bf07ff8d250b3
   rootca_der.crt: b2bd9031aa6d0e14f4c57fd548258f37b1fb39e4
   rootcerts.tar.bz2: 54c4ec6b7d2c04dee64f80a2e1b4fe545b1b7484
   isrgrootx1.der: cabd2a79a1076a31f21d253635cb039d4329a5e8

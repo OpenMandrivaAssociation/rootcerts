@@ -1,0 +1,29 @@
+diff -uNr rootcerts/mkcerts.pl rootcertsp/mkcerts.pl
+--- rootcerts/mkcerts.pl	2001-04-07 23:30:26.000000000 +0200
++++ rootcertsp/mkcerts.pl	2017-08-22 11:06:27.301556528 +0300
+@@ -67,7 +67,7 @@
+     # Ok, now standardize the filename by grabbing the subject, and going
+     # from there.
+ 
+-    open (D, "openssl x509 -subject <$filename |") || die "$!\n";
++    open (D, "openssl x509 -subject -nameopt compat <$filename |") || die "$!\n";
+ 
+     $subject="";
+ 
+@@ -82,7 +82,7 @@
+ 
+     my %var;
+ 
+-    $subject =~ s/\/([a-zA-Z]*=)/\n$1/g;
++    $subject =~ s/\s?([a-zA-Z]*=)/\n$1/g;
+ 
+     grep { $var{$1}=$2 if /^([A-Z]*)=(.*)/; } split (/\n/, $subject);
+ 
+@@ -95,6 +95,7 @@
+     # Put everything to lower case.  Replace non-alnum with dashes.  Collapse
+     # multiple dashes.
+ 
++    $n =~ s/,//g;
+     $n =~ tr/[A-Z]/[a-z]/;
+     $n =~ s/[^0-9a-z]/-/g;
+     $n =~ s/--*/-/g;
