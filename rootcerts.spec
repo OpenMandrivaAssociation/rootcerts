@@ -3,7 +3,7 @@
 %define debug_package %{nil}
 
 # _without = java enabled, _with = java disabled
-%ifnarch %mips
+%ifnarch %mips riscv64
 %bcond_without java
 %endif
 
