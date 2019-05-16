@@ -15,7 +15,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20181108.00
+Version:	20190516.00
 Release:	1
 License:	GPL
 Group:		System/Servers
@@ -51,10 +51,10 @@ Patch1:		generate-cacerts-mandriva.patch
 Patch2:		generate-cacerts-rename-duplicates.patch
 %if %{mdvver} > 3000000
 Patch3:		rootcerts-fix-mkcerts-to-work-with-new-openssl.patch
+Patch4:		use-openssl-rehash-instead-of-c_rehash.patch
 %endif
 BuildRequires:	perl
 BuildRequires:	openssl
-BuildRequires:	openssl-perl
 BuildRequires:	nss
 BuildRequires:	automake
 BuildRequires:	libtool
@@ -109,6 +109,7 @@ cp %{SOURCE10} .
 %patch2 -p0
 %if %{mdvver} > 3000000
 %patch3 -p1
+%patch4 -p1
 %endif
 
 %build
@@ -130,7 +131,7 @@ perl mkcerts.pl > certs.sh
 
 %configure --with-certdb=%{_sysconfdir}/pki/tls/rootcerts
 
-%make
+%make_build
 
 cat pem/*.pem > ca-bundle.crt
 cat %{SOURCE4} >> ca-bundle.crt
@@ -143,7 +144,7 @@ cd ..
 %endif
 
 %install
-%makeinstall_std
+%make_install
 
 install -d %{buildroot}%{_sysconfdir}/pki/tls/certs
 install -d %{buildroot}%{_sysconfdir}/pki/tls/mozilla
