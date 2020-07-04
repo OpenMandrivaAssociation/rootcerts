@@ -61,6 +61,7 @@ BuildRequires:  libtool
 BuildRequires:  java-devel
 BuildRequires:  javapackages-tools
 %endif
+BuildRequires:	docbook-xsl
 BuildRequires:	asciidoc
 BuildRequires:	xsltproc 
 
