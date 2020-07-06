@@ -25,7 +25,7 @@ Name:           rootcerts
 # - NEVER specifying the %%{release}
 Epoch:          1
 Version:        20200704.00
-Release:        1
+Release:        2
 License:        GPL
 Group:          System/Servers
 URL:            %{disturl}
@@ -67,6 +67,11 @@ BuildRequires:	xsltproc
 
 BuildArch:      noarch
 Provides:       ca-certificates
+
+# update-ca-trust (provided by rootcerts, called by %%post script)
+# calls /usr/bin/p11-kit, which in turn calls /usr/bin/trust
+Requires(post):	p11-kit p11-kit-trust
+Requires:	p11-kit p11-kit-trust
 
 %description
 This is a bundle of X.509 certificates of public Certificate
