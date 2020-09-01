@@ -25,7 +25,7 @@ Name:           rootcerts
 # - NEVER specifying the %%{release}
 Epoch:          1
 Version:        20200704.00
-Release:        2
+Release:        3
 License:        GPL
 Group:          System/Servers
 URL:            %{disturl}
@@ -64,7 +64,9 @@ BuildRequires:  javapackages-tools
 BuildRequires:	docbook-xsl
 BuildRequires:	asciidoc
 BuildRequires:	xsltproc 
-
+Requires(post):	coreutils
+Requires(post):	p11-kit
+Requires(post):	p11-kit-trust
 BuildArch:      noarch
 Provides:       ca-certificates
 
@@ -120,12 +122,12 @@ EOF
  ) > %{p11_format_bundle}
 
  touch %{legacy_default_bundle}
- NUM_LEGACY_DEFAULT=`find certs/legacy-default -type f | wc -l`
+ NUM_LEGACY_DEFAULT=$(find certs/legacy-default -type f | wc -l)
  if [ $NUM_LEGACY_DEFAULT -ne 0 ]; then
      for f in certs/legacy-default/*.crt; do 
        echo "processing $f"
-       tbits=`sed -n '/^# openssl-trust/{s/^.*=//;p;}' $f`
-       alias=`sed -n '/^# alias=/{s/^.*=//;p;q;}' $f | sed "s/'//g" | sed 's/"//g'`
+       tbits=$(sed -n '/^# openssl-trust/{s/^.*=//;p;}' $f)
+       alias=$(sed -n '/^# alias=/{s/^.*=//;p;q;}' $f | sed "s/'//g" | sed 's/"//g')
        targs=""
        if [ -n "$tbits" ]; then
           for t in $tbits; do
@@ -140,12 +142,12 @@ EOF
  fi
 
  touch %{legacy_disable_bundle}
- NUM_LEGACY_DISABLE=`find certs/legacy-disable -type f | wc -l`
+ NUM_LEGACY_DISABLE=$(find certs/legacy-disable -type f | wc -l)
  if [ $NUM_LEGACY_DISABLE -ne 0 ]; then
      for f in certs/legacy-disable/*.crt; do 
        echo "processing $f"
-       tbits=`sed -n '/^# openssl-trust/{s/^.*=//;p;}' $f`
-       alias=`sed -n '/^# alias=/{s/^.*=//;p;q;}' $f | sed "s/'//g" | sed 's/"//g'`
+       tbits=$(sed -n '/^# openssl-trust/{s/^.*=//;p;}' $f)
+       alias=$(sed -n '/^# alias=/{s/^.*=//;p;q;}' $f | sed "s/'//g" | sed 's/"//g')
        targs=""
        if [ -n "$tbits" ]; then
           for t in $tbits; do
@@ -159,7 +161,7 @@ EOF
      done
  fi
 
- P11FILES=`find certs -name \*.tmp-p11-kit | wc -l`
+ P11FILES=$(find certs -name \*.tmp-p11-kit | wc -l)
  if [ $P11FILES -ne 0 ]; then
    for p in certs/*.tmp-p11-kit; do 
      cat "$p" >> %{p11_format_bundle}
@@ -177,7 +179,6 @@ xsltproc --nonet -o %{name}/update-ca-trust.8 /etc/asciidoc/docbook-xsl/manpage.
 cp %{SOURCE9} %{name}/ca-legacy.8.txt
 asciidoc.py -v -d manpage -b docbook %{name}/ca-legacy.8.txt
 xsltproc --nonet -o %{name}/ca-legacy.8 /etc/asciidoc/docbook-xsl/manpage.xsl %{name}/ca-legacy.8.xml
-
 
 %install
 mkdir -p -m 755 %{buildroot}%{pkidir}/java
@@ -234,7 +235,6 @@ install -d %{buildroot}%{_sysconfdir}/ssl
 for d in certs private; do
     ln -sf %{_sysconfdir}/pki/tls/$d %{buildroot}%{_sysconfdir}/ssl/
 done
-
 
 # touch ghosted files that will be extracted dynamically
 # Set chmod 444 to use identical permission
