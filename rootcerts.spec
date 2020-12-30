@@ -24,8 +24,8 @@ Name:           rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:          1
-Version:        20200704.00
-Release:        3
+Version:	20201201.00
+Release:	1
 License:        GPL
 Group:          System/Servers
 URL:            %{disturl}
