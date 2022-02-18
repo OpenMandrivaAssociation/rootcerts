@@ -20,3 +20,11 @@ export P11_KIT_NO_USER_CONFIG=1
 /usr/bin/p11-kit extract --format=pem-bundle --filter=ca-anchors --overwrite --comment --purpose code-signing $DEST/pem/objsign-ca-bundle.pem
 /usr/bin/p11-kit extract --format=java-cacerts --filter=ca-anchors --overwrite --purpose server-auth $DEST/java/cacerts
 /usr/bin/p11-kit extract --format=edk2-cacerts --filter=ca-anchors --overwrite --purpose=server-auth $DEST/edk2/cacerts.bin
+# Hashed directory of BEGIN TRUSTED-style certs (usable as OpenSSL CApath and
+# by GnuTLS)
+/usr/bin/p11-kit extract --format=pem-directory-hash --filter=ca-anchors --overwrite --purpose server-auth $DEST/pem/directory-hash
+# Debian compatibility: their /etc/ssl/certs has this bundle
+/usr/bin/ln -s ../tls-ca-bundle.pem $DEST/pem/directory-hash/ca-certificates.crt
+# Backwards compatibility: RHEL/Fedora provided a /etc/ssl/certs/ca-bundle.crt
+# since https://bugzilla.redhat.com/show_bug.cgi?id=572725
+/usr/bin/ln -s ../tls-ca-bundle.pem $DEST/pem/directory-hash/ca-bundle.crt
