@@ -16,19 +16,19 @@
 %define legacy_disable_bundle ca-bundle.legacy.disable.crt
 %define java_bundle java/cacerts
 
-Summary:        Bundle of CA Root Certificates
-Name:           rootcerts
+Summary:	Bundle of CA Root Certificates
+Name:		rootcerts
 # <mrl> Use this versioning style in order to be easily backportable.
 # Note that the release is the last two digits on the version.
 # All BuildRequires for rootcerts should be done this way:
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
-Epoch:          1
-Version:	20201201.00
+Epoch:		1
+Version:	20220208.00
 Release:	1
-License:        GPL
-Group:          System/Servers
-URL:            %{disturl}
+License:	GPL
+Group:		System/Servers
+URL:		%{disturl}
 # For Source0, the NSS commit trunk version of this file is here:
 # https://hg.mozilla.org/projects/nss/raw-file/default/lib/ckfw/builtins/certdata.txt
 # See https://hg.mozilla.org/projects/nss/log/default/lib/ckfw/builtins/certdata.txt for new versions
@@ -39,12 +39,12 @@ URL:            %{disturl}
 # or the Mozilla development commit trunk:
 # https://hg.mozilla.org/mozilla-central/log/default/security/nss/lib/ckfw/builtins/certdata.txt
 # Ideally, it should correspond to the version shipped in the NSS release we are using
-Source0:	certdata.txt
+Source0:	https://hg.mozilla.org/projects/nss/raw-file/default/lib/ckfw/builtins/certdata.txt
 # Similarly, Source1 comes from:
 # https://hg.mozilla.org/projects/nss/raw-file/default/lib/ckfw/builtins/nssckbi.h
 # Check the log to see if it needs to be updated:
 # https://hg.mozilla.org/projects/nss/log/default/lib/ckfw/builtins/nssckbi.h
-Source1:	nssckbi.h
+Source1:	https://hg.mozilla.org/projects/nss/raw-file/default/lib/ckfw/builtins/nssckbi.h
 Source2:	update-ca-trust
 Source3:	trust-fixes
 Source4:	certdata2pem.py
@@ -52,28 +52,23 @@ Source5:	ca-legacy.conf
 Source6:	ca-legacy
 Source9:	ca-legacy.8.txt
 Source10:	update-ca-trust.8.txt
-BuildRequires:  python3
-BuildRequires:  openssl
-BuildRequires:  nss
-BuildRequires:  automake
-BuildRequires:  libtool
+BuildRequires:	python
+BuildRequires:	openssl
+BuildRequires:	nss
+BuildRequires:	automake
+BuildRequires:	libtool
 %if %{with java}
-BuildRequires:  java-devel
-BuildRequires:  javapackages-tools
+BuildRequires:	java-devel
+BuildRequires:	javapackages-tools
 %endif
 BuildRequires:	docbook-xsl
 BuildRequires:	asciidoc
-BuildRequires:	xsltproc 
+BuildRequires:	xsltproc
 Requires(post):	coreutils
 Requires(post):	p11-kit
 Requires(post):	p11-kit-trust
-BuildArch:      noarch
-Provides:       ca-certificates
-
-# update-ca-trust (provided by rootcerts, called by %%post script)
-# calls /usr/bin/p11-kit, which in turn calls /usr/bin/trust
-Requires(post):	p11-kit p11-kit-trust
-Requires:	p11-kit p11-kit-trust
+BuildArch:	noarch
+Provides:	ca-certificates
 
 %description
 This is a bundle of X.509 certificates of public Certificate
@@ -85,8 +80,8 @@ configure this file as the SSLCACertificateFile.
 
 %if %{with java}
 %package java
-Summary:        Bundle of CA Root Certificates for Java
-Group:          Development/Java
+Summary:	Bundle of CA Root Certificates for Java
+Group:		Development/Java
 
 %description java
 Bundle of X.509 certificates of public Certificate Authorities (CA)
@@ -100,11 +95,11 @@ mkdir %{name}/certs/legacy-disable
 mkdir %{name}/java
 
 %build
-pushd %{name}/certs
+cd %{name}/certs
  cp %{SOURCE0} certdata.txt
- python3 %{SOURCE4} >c2p.log 2>c2p.err
-popd
-pushd %{name}
+ python %{SOURCE4} >c2p.log 2>c2p.err
+cd -
+cd %{name}
  (
    cat <<EOF
 # This is a bundle of X.509 certificates of public Certificate
@@ -169,7 +164,7 @@ EOF
  fi
  # Append our trust fixes
  cat %{SOURCE3} >> %{p11_format_bundle}
-popd
+cd -
 
 #manpage
 cp %{SOURCE10} %{name}/update-ca-trust.8.txt
@@ -193,9 +188,9 @@ mkdir -p -m 755 %{buildroot}%{catrustdir}/extracted/edk2
 mkdir -p -m 755 %{buildroot}%{_mandir}/man8
 install -p -m 644 %{name}/update-ca-trust.8 %{buildroot}%{_mandir}/man8
 install -p -m 644 %{name}/ca-legacy.8 %{buildroot}%{_mandir}/man8
-install -d %{buildroot}%{_sysconfdir}/pki/tls/certs
-install -d %{buildroot}%{_sysconfdir}/pki/tls/certs/source
-install -d %{buildroot}%{_sysconfdir}/pki/tls/mozilla
+install -d %{buildroot}%{pkidir}/tls/certs
+install -d %{buildroot}%{pkidir}/tls/certs/source
+install -d %{buildroot}%{pkidir}/tls/mozilla
 install -d %{buildroot}%{_bindir}
 install -p -m 644 %{SOURCE5} %{buildroot}%{catrustdir}/ca-legacy.conf
 install -p -m 755 %{SOURCE2} %{buildroot}%{_bindir}/update-ca-trust
@@ -231,9 +226,8 @@ EOF
 
 # fix #58107
 install -d %{buildroot}%{_sysconfdir}/ssl
-
 for d in certs private; do
-    ln -sf %{_sysconfdir}/pki/tls/$d %{buildroot}%{_sysconfdir}/ssl/
+    ln -sf %{pkidir}/tls/$d %{buildroot}%{_sysconfdir}/ssl/
 done
 
 # touch ghosted files that will be extracted dynamically
@@ -262,26 +256,35 @@ ln -s %{catrustdir}/extracted/%{java_bundle} \
     %{buildroot}%{pkidir}/%{java_bundle}
 
 %post
+if [ -x %{_bindir}/ln ]; then
+    %{_bindir}/ca-legacy install
+    %{_bindir}/update-ca-trust
+fi
+
+%posttrans
 %{_bindir}/ca-legacy install
 %{_bindir}/update-ca-trust
 
 %files
-%doc README 
+%doc README
 %dir %{catrustdir}/source
 %dir %{catrustdir}/source/anchors
 %dir %{catrustdir}/source/blacklist
-%{_sysconfdir}/pki/tls/cert.pem
-%{_mandir}/man8/ca-legacy.8.*
-%{_mandir}/man8/update-ca-trust.8.*
-%config(noreplace) %{_sysconfdir}/pki/tls/mozilla/certdata.txt
+%dir %{pkidir}/tls/certs
+%{pkidir}/tls/cert.pem
+%doc %{_mandir}/man8/ca-legacy.8.*
+%doc %{_mandir}/man8/update-ca-trust.8.*
+%config(noreplace) %{pkidir}/tls/mozilla/certdata.txt
 %{_sysconfdir}/ssl/certs
 %{_sysconfdir}/ssl/private
 # symlinks for old locations
 %{pkidir}/tls/certs/%{classic_tls_bundle}
 %{pkidir}/tls/certs/%{openssl_format_trust_bundle}
 # master bundle file with trust
+%dir %{_datadir}/pki
+%dir %{_datadir}/pki/ca-trust-source
+%dir %{_datadir}/pki/ca-trust-legacy
 %{_datadir}/pki/ca-trust-source/%{p11_format_bundle}
-
 %{_datadir}/pki/ca-trust-legacy/%{legacy_default_bundle}
 %{_datadir}/pki/ca-trust-legacy/%{legacy_disable_bundle}
 # update/extract tool
@@ -290,6 +293,11 @@ ln -s %{catrustdir}/extracted/%{java_bundle} \
 %{_bindir}/ca-legacy
 %ghost %{catrustdir}/source/ca-bundle.legacy.crt
 # files extracted files
+%dir %{catrustdir}/extracted
+%dir %{catrustdir}/extracted/pem
+%dir %{catrustdir}/extracted/openssl
+%dir %{catrustdir}/extracted/java
+%dir %{catrustdir}/extracted/edk2
 %ghost %{catrustdir}/extracted/pem/tls-ca-bundle.pem
 %ghost %{catrustdir}/extracted/pem/email-ca-bundle.pem
 %ghost %{catrustdir}/extracted/pem/objsign-ca-bundle.pem
@@ -297,10 +305,8 @@ ln -s %{catrustdir}/extracted/%{java_bundle} \
 %ghost %{catrustdir}/extracted/%{java_bundle}
 %ghost %{catrustdir}/extracted/edk2/cacerts.bin
 
-
 %if %{with java}
 %files java
 %dir %{_sysconfdir}/pki/java
 %config(noreplace) %{_sysconfdir}/pki/java/cacerts
 %endif
-
