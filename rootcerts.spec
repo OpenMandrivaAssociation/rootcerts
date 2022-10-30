@@ -24,7 +24,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20220610.00
+Version:	20220907.00
 Release:	1
 License:	GPL
 Group:		System/Servers
@@ -168,12 +168,12 @@ cd -
 
 #manpage
 cp %{SOURCE10} %{name}/update-ca-trust.8.txt
-asciidoc.py -v -d manpage -b docbook %{name}/update-ca-trust.8.txt
-xsltproc --nonet -o %{name}/update-ca-trust.8 /etc/asciidoc/docbook-xsl/manpage.xsl %{name}/update-ca-trust.8.xml
+asciidoc -v -d manpage -b docbook %{name}/update-ca-trust.8.txt
+xsltproc --nonet -o %{name}/update-ca-trust.8 %{py_puresitedir}/asciidoc/resources/docbook-xsl/manpage.xsl  %{name}/update-ca-trust.8.xml
 
 cp %{SOURCE9} %{name}/ca-legacy.8.txt
-asciidoc.py -v -d manpage -b docbook %{name}/ca-legacy.8.txt
-xsltproc --nonet -o %{name}/ca-legacy.8 /etc/asciidoc/docbook-xsl/manpage.xsl %{name}/ca-legacy.8.xml
+asciidoc -v -d manpage -b docbook %{name}/ca-legacy.8.txt
+xsltproc --nonet -o %{name}/ca-legacy.8 %{py_puresitedir}/asciidoc/resources/docbook-xsl/manpage.xsl %{name}/ca-legacy.8.xml
 
 %install
 mkdir -p -m 755 %{buildroot}%{pkidir}/java
