@@ -24,7 +24,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20240215.00
+Version:	20240823.00
 Release:	1
 License:	GPL
 Group:		System/Servers
