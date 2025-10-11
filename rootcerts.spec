@@ -24,7 +24,7 @@ Name:		rootcerts
 # BuildRequires: rootcerts >= 0:20070402.00, for example
 # - NEVER specifying the %%{release}
 Epoch:		1
-Version:	20250130.00
+Version:	20251011.00
 Release:	1
 License:	GPL
 Group:		System/Servers
@@ -45,13 +45,12 @@ Source0:	https://hg.mozilla.org/projects/nss/raw-file/default/lib/ckfw/builtins/
 # Check the log to see if it needs to be updated:
 # https://hg.mozilla.org/projects/nss/log/default/lib/ckfw/builtins/nssckbi.h
 Source1:	https://hg.mozilla.org/projects/nss/raw-file/default/lib/ckfw/builtins/nssckbi.h
-Source2:	update-ca-trust
-Source3:	trust-fixes
-Source4:	certdata2pem.py
-Source5:	ca-legacy.conf
-Source6:	ca-legacy
-Source9:	ca-legacy.8.txt
-Source10:	update-ca-trust.8.txt
+Source2:	https://src.fedoraproject.org/rpms/ca-certificates/raw/rawhide/f/update-ca-trust
+Source4:	https://src.fedoraproject.org/rpms/ca-certificates/raw/rawhide/f/certdata2pem.py
+Source5:	https://src.fedoraproject.org/rpms/ca-certificates/raw/rawhide/f/ca-legacy.conf
+Source6:	https://src.fedoraproject.org/rpms/ca-certificates/raw/rawhide/f/ca-legacy
+Source9:	https://src.fedoraproject.org/rpms/ca-certificates/raw/rawhide/f/ca-legacy.8.txt
+Source10:	https://src.fedoraproject.org/rpms/ca-certificates/raw/rawhide/f/update-ca-trust.8.txt
 BuildRequires:	python
 BuildRequires:	openssl
 BuildRequires:	nss
@@ -162,8 +161,6 @@ EOF
      cat "$p" >> %{p11_format_bundle}
    done
  fi
- # Append our trust fixes
- cat %{SOURCE3} >> %{p11_format_bundle}
 cd -
 
 #manpage
